@@ -1,13 +1,11 @@
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
-abstract class AbstractEntityManagerTestKit<T extends EntityManager<D>,
+abstract public class AbstractEntityManagerTestKit<T extends EntityManager<D>,
         D extends RoutingDomainEntity> extends AkkaTestKit {
 
     private final TestActorRef<T> managerRef;
@@ -15,7 +13,7 @@ abstract class AbstractEntityManagerTestKit<T extends EntityManager<D>,
 
     final AtomicInteger id = new AtomicInteger(0);
 
-    AbstractEntityManagerTestKit() {
+    public AbstractEntityManagerTestKit() {
         final ActorRef dsManagerRef = getSystem().actorOf(DataSourceStubManagerActor.props());
         final Props props = serviceCoordinatorCreatorProps(dsManagerRef);
         final ActorRef coordinatorRef = getSystem().actorOf(props);

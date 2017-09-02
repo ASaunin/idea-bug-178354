@@ -2,6 +2,7 @@
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.japi.Creator;
 import akka.testkit.javadsl.TestKit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.AfterClass;
@@ -30,7 +31,12 @@ public abstract class AkkaTestKit extends TestKit {
     }
 
     protected static Props serviceCoordinatorCreatorProps(ActorRef dsManagerRef) {
-        return null;
+        return Props.create(ServiceCoordinatorActor.class, (Creator<ServiceCoordinatorActor>)
+                () -> new ServiceCoordinatorActor(dsManagerRef) {
+                    protected void loadHttpApi() {
+                    }
+                }
+        );
     }
 
 }
